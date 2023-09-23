@@ -18,8 +18,14 @@ if __name__ == "__main__":
     pantalla = pygame.display.set_mode((cuadricula.ancho, cuadricula.largo))
     reloj = pygame.time.Clock()  # Para limitar los fps
 
+
     #variables del juego
     gameMenu = True
+    movible = False
+    count = 0
+    REFRESH_RATE = 3
+
+    
 
     #imagenes de los botones
     btnEmpezarImage = pygame.image.load("imgs/boton-empezar.png")
@@ -27,28 +33,46 @@ if __name__ == "__main__":
     #def botones 
     botonInicio = Boton(200, 100, btnEmpezarImage, 0.5)
 
-
     # Crear los elementos del juego
     fruta = Comida(cuadricula)
     serpiente = Serpiente(cuadricula)
 
     # Cada 150 ms actualizo la pantalla con el evento
     SCREEN_UPDATE = pygame.USEREVENT
+
     pygame.time.set_timer(SCREEN_UPDATE, 150)
 
     while True:
-       
+        
         # Verificar la validez de los comandos entrados
         for event in pygame.event.get():
+            
             # Salir del juego
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == SCREEN_UPDATE:
+
+            if event.type == pygame.KEYDOWN and not gameMenu:
+                if event.key == pygame.K_LEFT or event.key == ord('a'):
+                    serpiente.cambiarDireccion("IZQUIERDA")
+                if event.key == pygame.K_RIGHT or event.key == ord('d'):
+                    serpiente.cambiarDireccion("DERECHA")
+                if event.key == pygame.K_UP or event.key == ord('w'):
+                    serpiente.cambiarDireccion("ARRIBA")
+                if event.key == pygame.K_DOWN or event.key == ord('s'):
+                    serpiente.cambiarDireccion("ABAJO")
+                
+                
+                
+
+            if count == REFRESH_RATE-1 and not gameMenu and movible :
+                
+                
                 serpiente.mover()
-
-       
-
+                
+                
+                movible = False
+                
         # Crear una pantalla con el color de cuadricula
         pantalla.fill(cuadricula.color)
 
@@ -60,14 +84,17 @@ if __name__ == "__main__":
             # Máximo 60 FPS
             reloj.tick(60) 
 
-
         # Cada entrada actualizar los elementos
         else:
-            fruta.dibujar_comida(pantalla)
-            serpiente.dibujar_serpiente(pantalla)
-        
-            pygame.display.update()
+            count +=1
+            if count == REFRESH_RATE:
+                fruta.dibujar_comida(pantalla)
+                serpiente.dibujar_serpiente(pantalla)
+                movible = True
+                pygame.display.update()
+                count = 0
 
-            # Máximo 60 FPS
-            reloj.tick(1)
-    
+            
+            reloj.tick(REFRESH_RATE)
+   
+       

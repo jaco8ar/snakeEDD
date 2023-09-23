@@ -15,10 +15,8 @@ class Serpiente:
 
     def dibujar_serpiente(self, pantalla):
         """Dibujo cada pedazo en la cuadrícula"""
-        print("dibuja")
         for elemento in self.cuerpo:
             # Dibuja cada elemento en el cuerpo
-            print("elementos", elemento)
             elemento_x = elemento[0] * self.cuadricula.tamano_celdas
             elemento_y = elemento[1] * self.cuadricula.tamano_celdas
             ancho = self.cuadricula.tamano_celdas
@@ -31,6 +29,18 @@ class Serpiente:
         # Esto determina qué estructura de datos debemos usar
         self.cuerpo.appendleft([self.cuerpo[0][0] + self.direccion[0], self.cuerpo[0][1] + self.direccion[1]])
         self.cuerpo.pop()
+
+    def cambiarDireccion(self, neoDirecccion):
+        direcciones = {
+            "DERECHA": [1,0],
+            "IZQUIERDA": [-1,0],
+            "ARRIBA": [0,-1],
+            "ABAJO": [0,1]
+        }
+        if direcciones[neoDirecccion][0]+self.direccion[0] != 0 and direcciones[neoDirecccion][1]+self.direccion[1] != 0:
+            self.direccion = direcciones[neoDirecccion]
+        
+
 
     def colision_comida(self):
         pass
