@@ -6,21 +6,23 @@ class Serpiente:
     """Representa la serpiente"""
     # Puede contener el temporizador para el movimiento automático de la serpiente
 
-    def __init__(self):
+    def __init__(self, cuadricula):
         """Cada pedazo del cuerpo se guarda en un deque"""
+        self.cuadricula = cuadricula
         self.cuerpo = deque([[4, 2], [3, 2], [2, 2]])
         self.color = (153, 7, 82)
         self.direccion = [1, 0]
 
-    def dibujar_serpiente(self):
+    def dibujar_serpiente(self, pantalla):
         """Dibujo cada pedazo en la cuadrícula"""
-
+        print("dibuja")
         for elemento in self.cuerpo:
             # Dibuja cada elemento en el cuerpo
-            elemento_x = elemento[0] * cuadricula.tamano_celdas
-            elemento_y = elemento[1] * cuadricula.tamano_celdas
-            ancho = cuadricula.tamano_celdas
-            largo = cuadricula.tamano_celdas
+            print("elementos", elemento)
+            elemento_x = elemento[0] * self.cuadricula.tamano_celdas
+            elemento_y = elemento[1] * self.cuadricula.tamano_celdas
+            ancho = self.cuadricula.tamano_celdas
+            largo = self.cuadricula.tamano_celdas
 
             pedazo = pygame.Rect(elemento_x, elemento_y, ancho, largo)
             pygame.draw.rect(pantalla, self.color, pedazo)
