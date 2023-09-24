@@ -12,6 +12,7 @@ class Serpiente:
         self.cuerpo = deque([[4, 2], [3, 2], [2, 2]])
         self.color = (153, 7, 82)
         self.direccion = [1, 0]
+        self.haCambiado = False
 
     def dibujar_serpiente(self, pantalla):
         """Dibujo cada pedazo en la cuadrícula"""
@@ -24,6 +25,7 @@ class Serpiente:
 
             pedazo = pygame.Rect(elemento_x, elemento_y, ancho, largo)
             pygame.draw.rect(pantalla, self.color, pedazo)
+            self.haCambiado = False
 
     def mover(self):
         # Esto determina qué estructura de datos debemos usar
@@ -37,11 +39,10 @@ class Serpiente:
             "ARRIBA": [0,-1],
             "ABAJO": [0,1]
         }
-        if direcciones[neoDirecccion][0]+self.direccion[0] != 0 and direcciones[neoDirecccion][1]+self.direccion[1] != 0:
+        if direcciones[neoDirecccion][0]+self.direccion[0] != 0 and direcciones[neoDirecccion][1]+self.direccion[1] != 0 and not self.haCambiado:
             self.direccion = direcciones[neoDirecccion]
+            self.haCambiado = True
         
-
-
     def colision_comida(self):
         pass
 
