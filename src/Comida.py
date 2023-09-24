@@ -1,5 +1,6 @@
 from collections import deque
 from Cuadricula import Cuadricula
+from random import randint
 import pygame
 import sys
 
@@ -16,6 +17,7 @@ class Comida:
 
     def dibujar_comida(self,pantalla):
         """Para el dibujo se hace la escala por el tamaño de celdas"""
+        
         x_pos = self.pos[0] * self.cuadricula.tamano_celdas
         y_pos = self.pos[1] * self.cuadricula.tamano_celdas
         ancho = self.cuadricula.tamano_celdas
@@ -25,4 +27,5 @@ class Comida:
         pygame.draw.rect(pantalla, self.color, comida)
 
     def generar_comida(self):
-        pass
+        self.pos = [randint(0,12), randint(0,12)]
+       
