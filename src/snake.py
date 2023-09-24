@@ -6,6 +6,7 @@ from Serpiente import Serpiente
 
 import pygame
 import sys
+import os
 # Más adelante hacemos import random
 
 
@@ -25,10 +26,14 @@ if __name__ == "__main__":
     count = 0
     REFRESH_RATE = 2
 
-    
+    # Obtén el directorio actual
+    directorio_actual = os.path.dirname(__file__)
+
+    # Construye la ruta a la imagen dentro de la carpeta "imgs"
+    ruta_imagen = os.path.join(directorio_actual, "..", "imgs", "boton-empezar.png")
 
     #imagenes de los botones
-    btnEmpezarImage = pygame.image.load("imgs/boton-empezar.png")
+    btnEmpezarImage = pygame.image.load(ruta_imagen)
 
     #def botones 
     botonInicio = Boton(200, 100, btnEmpezarImage, 0.5)
