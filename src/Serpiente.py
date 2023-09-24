@@ -51,3 +51,6 @@ class Serpiente:
 
     def colision_cuerpo(self):
         pass
+
+    def crecer(self):
+        pass

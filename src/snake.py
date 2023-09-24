@@ -86,6 +86,11 @@ if __name__ == "__main__":
                 movible = True
                 pygame.display.update()
                 count = 0
+                if serpiente.cuerpo[0] == fruta.pos:
+                    fruta.generar_comida()  
+                    serpiente.crecer()
+                    fruta.dibujar_comida(pantalla)
+                    pygame.display.update()
 
             
             reloj.tick(REFRESH_RATE)
