@@ -23,7 +23,7 @@ if __name__ == "__main__":
     gameMenu = True
     movible = False
     count = 0
-    REFRESH_RATE = 3
+    REFRESH_RATE = 2
 
     
 
@@ -62,15 +62,8 @@ if __name__ == "__main__":
                 if event.key == pygame.K_DOWN or event.key == ord('s'):
                     serpiente.cambiarDireccion("ABAJO")
                 
-                
-                
-
             if count == REFRESH_RATE-1 and not gameMenu and movible :
-                
-                
                 serpiente.mover()
-                
-                
                 movible = False
                 
         # Crear una pantalla con el color de cuadricula
@@ -81,7 +74,7 @@ if __name__ == "__main__":
             if botonInicio.draw(pantalla):
                 gameMenu = False  
             pygame.display.update()
-            # Máximo 60 FPS
+            #el menu se actualiza a 60 fps
             reloj.tick(60) 
 
         # Cada entrada actualizar los elementos
