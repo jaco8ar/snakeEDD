@@ -20,7 +20,7 @@ if __name__ == "__main__":
     # Variables del juego
     gameMenu = True
     REFRESH_RATE = 5
-
+    game_over = False  # Inicialmente, el juego no ha terminado
     # Obtén el directorio actual
     directorio_actual = os.path.dirname(__file__)
 
@@ -85,4 +85,6 @@ if __name__ == "__main__":
                 fruta.dibujar_comida(pantalla)
                 pygame.display.update()
 
+            if (serpiente.colision_cuerpo()) or (serpiente.colision_bordes()):
+                sys.exit()
             reloj.tick(REFRESH_RATE)
