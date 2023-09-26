@@ -10,22 +10,27 @@ class Serpiente:
         """Cada pedazo del cuerpo se guarda en un deque"""
         self.cuadricula = cuadricula
         self.cuerpo = deque([[6, 6], [6, 7], [6, 8]])
-        self.color = (153, 7, 82)
+        self.color = (34, 139, 34)
+        self.color_cabeza = (0, 100, 0)
         self.direccion = [0, -1]
         self.haCambiado = False
 
     def dibujar_serpiente(self, pantalla):
         """Dibujo cada pedazo en la cuadrícula"""
-        for elemento in self.cuerpo:
-            # Dibuja cada elemento en el cuerpo
+        for index, elemento in enumerate(self.cuerpo):
             elemento_x = elemento[0] * self.cuadricula.tamano_celdas
             elemento_y = elemento[1] * self.cuadricula.tamano_celdas
             ancho = self.cuadricula.tamano_celdas
             largo = self.cuadricula.tamano_celdas
 
-            pedazo = pygame.Rect(elemento_x, elemento_y, ancho, largo)
-            pygame.draw.rect(pantalla, self.color, pedazo)
-            self.haCambiado = False
+            if index == 0:
+                pedazo = pygame.Rect(elemento_x, elemento_y, ancho, largo)
+                pygame.draw.rect(pantalla, self.color_cabeza, pedazo)
+            else:
+                # Dibuja cada elemento en el cuerpo
+                pedazo = pygame.Rect(elemento_x, elemento_y, ancho, largo)
+                pygame.draw.rect(pantalla, self.color, pedazo)
+                self.haCambiado = False
 
     def mover(self):
         # Esto determina qué estructura de datos debemos usar
@@ -45,10 +50,22 @@ class Serpiente:
             self.haCambiado = True
 
     def colision_bordes(self):
-        pass
+        if self.cuerpo[0][0] < 0 or self.cuerpo[0][0] \
+                >= 12 or self.cuerpo[0][1] < 0 or self.cuerpo[0][1] >= 12:
+            return True
+        return False
 
     def colision_cuerpo(self):
-        pass
+        # En el bucle principal, después de actualizar la posición de la serpiente
+        cabexa = self.cuerpo.popleft()
+        if cabexa in self.cuerpo:
+            self.cuerpo.appendleft(cabexa)
+            return True
+        else:
+            self.cuerpo.appendleft(cabexa)
+            return False
+    # La cabeza de la serpiente ha chocado con su propio cuerpo
+    # Aquí puedes manejar la colisión, como terminar el juego.
 
     def crecer(self):
         self.cuerpo.append(self.cuerpo[-1])
