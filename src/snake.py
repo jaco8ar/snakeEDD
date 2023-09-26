@@ -19,9 +19,7 @@ if __name__ == "__main__":
 
     # Variables del juego
     gameMenu = True
-    movible = False
-    count = 0
-    REFRESH_RATE = 2
+    REFRESH_RATE = 5
 
     # Obtén el directorio actual
     directorio_actual = os.path.dirname(__file__)
@@ -45,10 +43,10 @@ if __name__ == "__main__":
     pygame.time.set_timer(SCREEN_UPDATE, 150)
 
     while True:
-        
+
         # Verificar la validez de los comandos entrados
         for event in pygame.event.get():
-            
+
             # Salir del juego
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -63,38 +61,28 @@ if __name__ == "__main__":
                     serpiente.cambiar_direccion("ARRIBA")
                 if event.key == pygame.K_DOWN or event.key == ord('s'):
                     serpiente.cambiar_direccion("ABAJO")
-                
-            if count == REFRESH_RATE-1 and not gameMenu and movible:
-                serpiente.mover()
-                movible = False
-                
+
         # Crear una pantalla con el color de cuadricula
         pantalla.fill(cuadricula.color)
-
         # Control del menu
         if gameMenu:
             if botonInicio.draw(pantalla):
-                gameMenu = False  
+                gameMenu = False
             pygame.display.update()
             # El menu se actualiza a 60 fps
-            reloj.tick(60) 
-
+            reloj.tick(60)
         # Cada entrada actualizar los elementos
         else:
-            count += 1
-            if count == REFRESH_RATE:
+            serpiente.mover()
+            fruta.dibujar_comida(pantalla)
+            serpiente.dibujar_serpiente(pantalla)
+            pygame.display.update()
+            # Esto sirve para las colisiones con comida
+            if serpiente.cuerpo[0] == fruta.pos:
+                fruta.generar_comida(serpiente.cuerpo)
+
+                serpiente.crecer()
                 fruta.dibujar_comida(pantalla)
-                serpiente.dibujar_serpiente(pantalla)
-                movible = True
                 pygame.display.update()
-                count = 0
 
-                # Esto sirve para las colisiones con comida
-                if serpiente.cuerpo[0] == fruta.pos:
-                    fruta.generar_comida(serpiente.cuerpo)
-
-                    serpiente.crecer()
-                    fruta.dibujar_comida(pantalla)
-                    pygame.display.update()
-            
             reloj.tick(REFRESH_RATE)
