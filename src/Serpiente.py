@@ -53,4 +53,4 @@ class Serpiente:
         pass
 
     def crecer(self):
-        pass
+        self.cuerpo.append(self.cuerpo[-1])
