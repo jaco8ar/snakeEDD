@@ -26,6 +26,10 @@ class Comida:
         comida = pygame.Rect(x_pos, y_pos, ancho, largo)
         pygame.draw.rect(pantalla, self.color, comida)
 
-    def generar_comida(self):
-        self.pos = [randint(0,12), randint(0,12)]
-       
+    def generar_comida(self, cuerpo_serpiente):
+        pos = [randint(0, 12), randint(0, 12)]
+
+        while pos in cuerpo_serpiente:
+            pos = [randint(0, 12), randint(0, 12)]
+
+        self.pos = pos

@@ -9,9 +9,9 @@ class Serpiente:
     def __init__(self, cuadricula):
         """Cada pedazo del cuerpo se guarda en un deque"""
         self.cuadricula = cuadricula
-        self.cuerpo = deque([[4, 2], [3, 2], [2, 2]])
+        self.cuerpo = deque([[6, 6], [6, 7], [6, 8]])
         self.color = (153, 7, 82)
-        self.direccion = [1, 0]
+        self.direccion = [0, -1]
         self.haCambiado = False
 
     def dibujar_serpiente(self, pantalla):
