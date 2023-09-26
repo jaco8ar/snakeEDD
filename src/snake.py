@@ -1,4 +1,3 @@
-from collections import deque
 from Boton import Boton
 from Cuadricula import Cuadricula
 from Comida import Comida
@@ -9,7 +8,6 @@ import sys
 import os
 # Más adelante hacemos import random
 
-
 # Ejecución del juego
 if __name__ == "__main__":
     pygame.init()
@@ -19,8 +17,7 @@ if __name__ == "__main__":
     pantalla = pygame.display.set_mode((cuadricula.ancho, cuadricula.largo))
     reloj = pygame.time.Clock()  # Para limitar los fps
 
-
-    #variables del juego
+    # Variables del juego
     gameMenu = True
     movible = False
     count = 0
@@ -32,10 +29,10 @@ if __name__ == "__main__":
     # Construye la ruta a la imagen dentro de la carpeta "imgs"
     ruta_imagen = os.path.join(directorio_actual, "..", "imgs", "boton-empezar.png")
 
-    #imagenes de los botones
+    # Imagenes de los botones
     btnEmpezarImage = pygame.image.load(ruta_imagen)
 
-    #def botones 
+    # Definir botones
     botonInicio = Boton(200, 100, btnEmpezarImage, 0.5)
 
     # Crear los elementos del juego
@@ -59,46 +56,45 @@ if __name__ == "__main__":
 
             if event.type == pygame.KEYDOWN and not gameMenu:
                 if event.key == pygame.K_LEFT or event.key == ord('a'):
-                    serpiente.cambiarDireccion("IZQUIERDA")
+                    serpiente.cambiar_direccion("IZQUIERDA")
                 if event.key == pygame.K_RIGHT or event.key == ord('d'):
-                    serpiente.cambiarDireccion("DERECHA")
+                    serpiente.cambiar_direccion("DERECHA")
                 if event.key == pygame.K_UP or event.key == ord('w'):
-                    serpiente.cambiarDireccion("ARRIBA")
+                    serpiente.cambiar_direccion("ARRIBA")
                 if event.key == pygame.K_DOWN or event.key == ord('s'):
-                    serpiente.cambiarDireccion("ABAJO")
+                    serpiente.cambiar_direccion("ABAJO")
                 
-            if count == REFRESH_RATE-1 and not gameMenu and movible :
+            if count == REFRESH_RATE-1 and not gameMenu and movible:
                 serpiente.mover()
                 movible = False
                 
         # Crear una pantalla con el color de cuadricula
         pantalla.fill(cuadricula.color)
 
-        #Control del menu
-        if gameMenu == True:
+        # Control del menu
+        if gameMenu:
             if botonInicio.draw(pantalla):
                 gameMenu = False  
             pygame.display.update()
-            #el menu se actualiza a 60 fps
+            # El menu se actualiza a 60 fps
             reloj.tick(60) 
 
         # Cada entrada actualizar los elementos
         else:
-            count +=1
+            count += 1
             if count == REFRESH_RATE:
                 fruta.dibujar_comida(pantalla)
                 serpiente.dibujar_serpiente(pantalla)
                 movible = True
                 pygame.display.update()
                 count = 0
+
+                # Esto sirve para las colisiones con comida
                 if serpiente.cuerpo[0] == fruta.pos:
                     fruta.generar_comida(serpiente.cuerpo)
 
                     serpiente.crecer()
                     fruta.dibujar_comida(pantalla)
                     pygame.display.update()
-
             
             reloj.tick(REFRESH_RATE)
-   
-       

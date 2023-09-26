@@ -1,7 +1,3 @@
-from collections import deque
-import pygame
-import sys
-
 class Cuadricula:
     """Define el la cuadricula 13 x 13 con celdas de 50 x 50 pixeles"""
     def __init__(self):

@@ -1,6 +1,6 @@
 from collections import deque
 import pygame
-import sys
+
 
 class Serpiente:
     """Representa la serpiente"""
@@ -32,19 +32,17 @@ class Serpiente:
         self.cuerpo.appendleft([self.cuerpo[0][0] + self.direccion[0], self.cuerpo[0][1] + self.direccion[1]])
         self.cuerpo.pop()
 
-    def cambiarDireccion(self, neoDirecccion):
+    def cambiar_direccion(self, neo_direcccion):
         direcciones = {
-            "DERECHA": [1,0],
-            "IZQUIERDA": [-1,0],
-            "ARRIBA": [0,-1],
-            "ABAJO": [0,1]
+            "DERECHA": [1, 0],
+            "IZQUIERDA": [-1, 0],
+            "ARRIBA": [0, -1],
+            "ABAJO": [0, 1]
         }
-        if direcciones[neoDirecccion][0]+self.direccion[0] != 0 and direcciones[neoDirecccion][1]+self.direccion[1] != 0 and not self.haCambiado:
-            self.direccion = direcciones[neoDirecccion]
+        if direcciones[neo_direcccion][0]+self.direccion[0] != 0 and direcciones[neo_direcccion][1]+self.direccion[1] \
+                != 0 and not self.haCambiado:
+            self.direccion = direcciones[neo_direcccion]
             self.haCambiado = True
-        
-    def colision_comida(self):
-        pass
 
     def colision_bordes(self):
         pass
