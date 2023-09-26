@@ -2,10 +2,11 @@ from Boton import Boton
 from Cuadricula import Cuadricula
 from Comida import Comida
 from Serpiente import Serpiente
-
+from random import randint
 import pygame
 import sys
 import os
+
 # Más adelante hacemos import random
 
 # Ejecución del juego
@@ -19,8 +20,9 @@ if __name__ == "__main__":
 
     # Variables del juego
     gameMenu = True
-    REFRESH_RATE = 5
+    REFRESH_RATE = 2
     game_over = False  # Inicialmente, el juego no ha terminado
+    mov_para_fruta = -1
     # Obtén el directorio actual
     directorio_actual = os.path.dirname(__file__)
 
@@ -74,16 +76,19 @@ if __name__ == "__main__":
         # Cada entrada actualizar los elementos
         else:
             serpiente.mover()
-            fruta.dibujar_comida(pantalla)
+            if mov_para_fruta <= 0:
+                fruta.dibujar_comida(pantalla)
+                mov_para_fruta = -1
             serpiente.dibujar_serpiente(pantalla)
             pygame.display.update()
             # Esto sirve para las colisiones con comida
             if serpiente.cuerpo[0] == fruta.pos:
-                fruta.generar_comida(serpiente.cuerpo)
-
+                mov_para_fruta = randint(0, 10)
                 serpiente.crecer()
-                fruta.dibujar_comida(pantalla)
+                fruta.generar_comida(serpiente.cuerpo)
                 pygame.display.update()
+
+            mov_para_fruta -= 1
 
             if (serpiente.colision_cuerpo()) or (serpiente.colision_bordes()):
                 sys.exit()
