@@ -4,7 +4,6 @@ import pygame
 
 class Serpiente:
     """Representa la serpiente"""
-    # Puede contener el temporizador para el movimiento automático de la serpiente
 
     def __init__(self, cuadricula):
         """Cada pedazo del cuerpo se guarda en un deque"""
@@ -13,10 +12,13 @@ class Serpiente:
         self.color = (34, 139, 34)
         self.color_cabeza = (0, 100, 0)
         self.direccion = [0, -1]
-        self.haCambiado = False
+
+        # Variable para manejar el caso en el que la serpiente se devuelve
+        # Al dar dos veces al botón contrario a su dirección actual
+        self.cambio_direccion = False
 
     def dibujar_serpiente(self, pantalla):
-        """Dibujo cada pedazo en la cuadrícula"""
+        """Dibujar cada pedazo en la cuadrícula"""
         for index, elemento in enumerate(self.cuerpo):
             elemento_x = elemento[0] * self.cuadricula.tamano_celdas
             elemento_y = elemento[1] * self.cuadricula.tamano_celdas
@@ -24,48 +26,60 @@ class Serpiente:
             largo = self.cuadricula.tamano_celdas
 
             if index == 0:
+                # Si el pedazo es la cabeza, lo dibujo de otro color
                 pedazo = pygame.Rect(elemento_x, elemento_y, ancho, largo)
                 pygame.draw.rect(pantalla, self.color_cabeza, pedazo)
             else:
-                # Dibuja cada elemento en el cuerpo
                 pedazo = pygame.Rect(elemento_x, elemento_y, ancho, largo)
                 pygame.draw.rect(pantalla, self.color, pedazo)
-                self.haCambiado = False
+                self.cambio_direccion = False
 
     def mover(self):
-        # Esto determina qué estructura de datos debemos usar
-        self.cuerpo.appendleft([self.cuerpo[0][0] + self.direccion[0], self.cuerpo[0][1] + self.direccion[1]])
+        """Acceder a los elementos del cuerpo y sumar la dirección"""
+        self.cuerpo.appendleft([self.cuerpo[0][0] + self.direccion[0],
+                                self.cuerpo[0][1] + self.direccion[1]])
         self.cuerpo.pop()
 
-    def cambiar_direccion(self, neo_direcccion):
+    def cambiar_direccion(self, nueva_direccion):
+        """Manejar el evento de las teclas para cambiar dirección"""
         direcciones = {
             "DERECHA": [1, 0],
             "IZQUIERDA": [-1, 0],
             "ARRIBA": [0, -1],
             "ABAJO": [0, 1]
         }
-        if direcciones[neo_direcccion][0]+self.direccion[0] != 0 and direcciones[neo_direcccion][1]+self.direccion[1] \
-                != 0 and not self.haCambiado:
-            self.direccion = direcciones[neo_direcccion]
-            self.haCambiado = True
+
+        # Verificar si la nueva dirección es válida y no es un cambio de dirección repetido
+        cambio_valido = (
+                (direcciones[nueva_direccion][0] + self.direccion[0] != 0)
+                and (direcciones[nueva_direccion][1] + self.direccion[1] != 0)
+                and not self.cambio_direccion
+        )
+
+        if cambio_valido:
+            self.direccion = direcciones[nueva_direccion]
+            self.cambio_direccion = True
 
     def colision_bordes(self):
-        if self.cuerpo[0][0] < 0 or self.cuerpo[0][0] > 12 \
-        or self.cuerpo[0][1] < 0 or self.cuerpo[0][1] > 12:
-            return True
-        return False
+        """Lógica por si la cabeza se sale de los bordes"""
+        cabeza_afuera = (12 < self.cuerpo[0][0] < 0) or (12 < self.cuerpo[0][1] < 0)
+
+        return cabeza_afuera
 
     def colision_cuerpo(self):
-        # En el bucle principal, después de actualizar la posición de la serpiente
-        cabexa = self.cuerpo.popleft()
-        if cabexa in self.cuerpo:
-            self.cuerpo.appendleft(cabexa)
+        """Lógica para colisiones con el propio cuerpo"""
+
+        # Se saca la cabeza temporalmente y se verifica si está en el cuerpo
+        cabeza_temp = self.cuerpo.popleft()
+
+        if cabeza_temp in self.cuerpo:
+            self.cuerpo.appendleft(cabeza_temp)
             return True
         else:
-            self.cuerpo.appendleft(cabexa)
+            self.cuerpo.appendleft(cabeza_temp)
             return False
-    # La cabeza de la serpiente ha chocado con su propio cuerpo
-    # Aquí puedes manejar la colisión, como terminar el juego.
 
     def crecer(self):
+        """Se define para crecer por la cola,
+        aunque da la ilusión de crecer por la cabeza"""
         self.cuerpo.append(self.cuerpo[-1])

@@ -3,8 +3,6 @@ import pygame
 
 
 class Comida:
-    """Representa la comida de la serpiente"""
-
     def __init__(self, cuadricula):
         """Guardar la posición inicial en (8, 2) en un ARDD"""
         self.x = 8
@@ -15,7 +13,6 @@ class Comida:
 
     def dibujar_comida(self, pantalla):
         """Para el dibujo se hace la escala por el tamaño de celdas"""
-        
         x_pos = self.pos[0] * self.cuadricula.tamano_celdas
         y_pos = self.pos[1] * self.cuadricula.tamano_celdas
         ancho = self.cuadricula.tamano_celdas
@@ -25,8 +22,10 @@ class Comida:
         pygame.draw.rect(pantalla, self.color, comida)
 
     def generar_comida(self, cuerpo_serpiente):
+        """Se genera un fruto en la cuadrícula"""
         pos = [randint(0, 12), randint(0, 12)]
 
+        # Generar comida por fuera de la serpiente
         while pos in cuerpo_serpiente:
             pos = [randint(0, 12), randint(0, 12)]
 
