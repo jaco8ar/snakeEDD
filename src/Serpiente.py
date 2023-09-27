@@ -50,8 +50,8 @@ class Serpiente:
             self.haCambiado = True
 
     def colision_bordes(self):
-        if self.cuerpo[0][0] < 0 or self.cuerpo[0][0] \
-                >= 12 or self.cuerpo[0][1] < 0 or self.cuerpo[0][1] >= 12:
+        if self.cuerpo[0][0] < 0 or self.cuerpo[0][0] > 12 \
+        or self.cuerpo[0][1] < 0 or self.cuerpo[0][1] > 12:
             return True
         return False
 
