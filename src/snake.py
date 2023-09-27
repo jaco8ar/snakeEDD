@@ -64,8 +64,19 @@ if __name__ == "__main__":
                 if event.key == pygame.K_DOWN or event.key == ord('s'):
                     serpiente.cambiar_direccion("ABAJO")
 
-        # Crear una pantalla con el color de cuadricula
+        filas = 13
+        columnas = 13
+
+        # Crear una pantalla con el color de fondo
         pantalla.fill(cuadricula.color)
+
+        # Dibujar la cuadrícula
+        for fila in range(filas):
+            for columna in range(columnas):
+                pygame.draw.rect(pantalla, (0, 139, 139),
+                                 pygame.Rect(fila * 50, columna * 50, 50, 50),
+                                 1)
+
         # Control del menu
         if gameMenu:
             if botonInicio.draw(pantalla):
