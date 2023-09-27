@@ -20,6 +20,7 @@ class Comida:
 
         comida = pygame.Rect(x_pos, y_pos, ancho, largo)
         pygame.draw.rect(pantalla, self.color, comida)
+        pygame.draw.rect(pantalla, (180, 70, 60), comida, 5)
 
     def generar_comida(self, cuerpo_serpiente):
         """Se genera un fruto en la cuadrícula"""

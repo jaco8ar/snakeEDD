@@ -1,52 +1,50 @@
+import sys
+import os
+import pygame
+from random import randint
 from Boton import Boton
 from Cuadricula import Cuadricula
 from Comida import Comida
 from Serpiente import Serpiente
-from random import randint
-import pygame
-import sys
-import os
-
-# Más adelante hacemos import random
 
 # Ejecución del juego
 if __name__ == "__main__":
+    # Inicializar Pygame y crear la cuadrícula del juego
     pygame.init()
     cuadricula = Cuadricula()
 
-    # Crear la pantalla principal del juego
+    # Crear la pantalla principal del juego y el reloj para limitar los FPS.
     pantalla = pygame.display.set_mode((cuadricula.ancho, cuadricula.largo))
-    reloj = pygame.time.Clock()  # Para limitar los fps
+    reloj = pygame.time.Clock()
 
-    # Variables del juego
-    gameMenu = True
+    # Definir variables del juego
     REFRESH_RATE = 2
-    game_over = False  # Inicialmente, el juego no ha terminado
+    gameMenu = True
+
+    # Definir variable para controlar la generación de frutas
+    # Cuando es negativa, se genera una fruta
     mov_para_fruta = -1
-    # Obtén el directorio actual
+
+    # Obtener el directorio actual
     directorio_actual = os.path.dirname(__file__)
 
-    # Construye la ruta a la imagen dentro de la carpeta "imgs"
+    # Construir la ruta a la imagen dentro de la carpeta "imgs"
     ruta_imagen = os.path.join(directorio_actual, "..", "imgs", "boton-empezar.png")
 
-    # Imagenes de los botones
+    # Definir el botón
     btnEmpezarImage = pygame.image.load(ruta_imagen)
-
-    # Definir botones
     botonInicio = Boton(200, 100, btnEmpezarImage, 0.5)
 
     # Crear los elementos del juego
     fruta = Comida(cuadricula)
     serpiente = Serpiente(cuadricula)
 
-    # Cada 150 ms actualizo la pantalla con el evento
+    # Obtener eventos de usuario cada 150ms
     SCREEN_UPDATE = pygame.USEREVENT
-
     pygame.time.set_timer(SCREEN_UPDATE, 150)
 
     while True:
-
-        # Verificar la validez de los comandos entrados
+        # Ciclo principal del juego
         for event in pygame.event.get():
 
             # Salir del juego
@@ -54,6 +52,7 @@ if __name__ == "__main__":
                 pygame.quit()
                 sys.exit()
 
+            # Manejar eventos de tecleos
             if event.type == pygame.KEYDOWN and not gameMenu:
                 if event.key == pygame.K_LEFT or event.key == ord('a'):
                     serpiente.cambiar_direccion("IZQUIERDA")
@@ -64,35 +63,40 @@ if __name__ == "__main__":
                 if event.key == pygame.K_DOWN or event.key == ord('s'):
                     serpiente.cambiar_direccion("ABAJO")
 
-        filas = 13
-        columnas = 13
-
-        # Crear una pantalla con el color de fondo
+        # Crear una pantalla de fondo
         pantalla.fill(cuadricula.color)
 
-        # Dibujar la cuadrícula
+        # Dibujar una cuadrícula encima de la pantalla
+        filas, columnas = 13, 13
+
         for fila in range(filas):
             for columna in range(columnas):
                 pygame.draw.rect(pantalla, (0, 139, 139),
-                                 pygame.Rect(fila * 50, columna * 50, 50, 50),
-                                 1)
+                                 pygame.Rect(fila * 50, columna * 50, 50, 50), 3)
 
-        # Control del menu
+        # Control del menu de juego
         if gameMenu:
+            # Si se da al botón de empezar, se inicia el juego
             if botonInicio.draw(pantalla):
                 gameMenu = False
             pygame.display.update()
             # El menu se actualiza a 60 fps
             reloj.tick(60)
+
         # Cada entrada actualizar los elementos
         else:
             serpiente.mover()
+
+            # Lógica para generar frutas.
+            # Se va restando al entero random hasta que es negativo
             if mov_para_fruta <= 0:
                 fruta.dibujar_comida(pantalla)
                 mov_para_fruta = -1
+
             serpiente.dibujar_serpiente(pantalla)
             pygame.display.update()
-            # Esto sirve para las colisiones con comida
+
+            # Lógica para colisiones con frutas
             if serpiente.cuerpo[0] == fruta.pos:
                 mov_para_fruta = randint(0, 10)
                 serpiente.crecer()
@@ -101,6 +105,8 @@ if __name__ == "__main__":
 
             mov_para_fruta -= 1
 
+            # Fin del juego
             if (serpiente.colision_cuerpo()) or (serpiente.colision_bordes()):
                 sys.exit()
+
             reloj.tick(REFRESH_RATE)
