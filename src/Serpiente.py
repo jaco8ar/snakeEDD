@@ -62,9 +62,9 @@ class Serpiente:
 
     def colision_bordes(self):
         """Lógica por si la cabeza se sale de los bordes"""
-        cabeza_afuera = (12 < self.cuerpo[0][0] < 0) or (12 < self.cuerpo[0][1] < 0)
-
-        return cabeza_afuera
+        if not (0 <= self.cuerpo[0][0] <= 12 and 0 <= self.cuerpo[0][1] <= 12):
+            return True
+        return False
 
     def colision_cuerpo(self):
         """Lógica para colisiones con el propio cuerpo"""
