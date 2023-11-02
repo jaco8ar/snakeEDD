@@ -1,11 +1,10 @@
-# Trabajo 1 de estructuras de datos
-
-## Prácticas generales con el código
-- Comentarios descriptivos en componentes complejos del código.
-- Hacer ramas para cada persona y el respectivo pull request.
+# Trabajos de estructuras de datos
 
 ## Intercambio de colecciones
 - Este es un proyecto del juego de la serpiente implementado en pygame.
+
+## Clon de Wordle
+- Implementación de un clon de wordle.
 
  ## Realizado por:
 - Jacobo Ochoa
